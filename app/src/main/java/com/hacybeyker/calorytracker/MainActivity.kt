@@ -16,6 +16,8 @@ import com.hacybeyker.calorytracker.ui.theme.CaloryTrackerTheme
 import com.hacybeyker.core.navigation.Route
 import com.hacybeyker.onboarding_presentation.age.AgeScreen
 import com.hacybeyker.onboarding_presentation.gender.GenderScreen
+import com.hacybeyker.onboarding_presentation.height.HeightScreen
+import com.hacybeyker.onboarding_presentation.weight.WeightScreen
 import com.hacybeyker.onboarding_presentation.welcome.WelcomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,16 +44,23 @@ class MainActivity : ComponentActivity() {
                         composable(Route.AGE) {
                             AgeScreen(
                                 scaffoldState = scaffoldState,
-                                onNavigate = navController::navigate)
+                                onNavigate = navController::navigate
+                            )
                         }
                         composable(Route.GENDER) {
                             GenderScreen(onNavigate = navController::navigate)
                         }
                         composable(Route.HEIGHT) {
-
+                            HeightScreen(
+                                scaffoldState = scaffoldState,
+                                onNavigate = navController::navigate
+                            )
                         }
                         composable(Route.WEIGHT) {
-
+                            WeightScreen(
+                                scaffoldState = scaffoldState,
+                                onNavigate = navController::navigate
+                            )
                         }
                         composable(Route.NUTRIENT_GOAL) {
 
