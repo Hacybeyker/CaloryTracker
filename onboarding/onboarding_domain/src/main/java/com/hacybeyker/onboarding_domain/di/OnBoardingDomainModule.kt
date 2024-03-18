@@ -9,7 +9,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class OnBoardingDomainModule {
+object OnBoardingDomainModule {
 
     @Provides
     @ViewModelScoped
