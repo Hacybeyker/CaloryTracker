@@ -3,7 +3,7 @@ package com.hacybeyker.calorytracker.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.hacybeyker.core.domain.DefaultPreferences
+import com.hacybeyker.core.data.preferences.DefaultPreferences
 import com.hacybeyker.core.domain.preferences.Preferences
 import com.hacybeyker.core.domain.use_case.FilterOutDigits
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.hacybeyker.core.domain
+package com.hacybeyker.core.data.preferences
 
 import android.content.SharedPreferences
 import com.hacybeyker.core.domain.model.ActivityLevel

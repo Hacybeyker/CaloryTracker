@@ -24,7 +24,7 @@ object TrackerDomainModule {
         repository: TrackerRepository,
         preferences: Preferences
     ): TrackerUseCases {
-        return com.hacybeyker.tracker_domain.use_case.TrackerUseCases(
+        return TrackerUseCases(
             trackFood = TrackFood(repository),
             searchFood = SearchFood(repository),
             getFoodsForDate = GetFoodsForDate(repository),

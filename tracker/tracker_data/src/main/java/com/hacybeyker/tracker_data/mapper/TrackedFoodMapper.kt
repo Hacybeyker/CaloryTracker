@@ -1,13 +1,10 @@
 package com.hacybeyker.tracker_data.mapper
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.hacybeyker.tracker_data.local.entity.TrackedFoodEntity
 import com.hacybeyker.tracker_domain.model.MealType
 import com.hacybeyker.tracker_domain.model.TrackedFood
 import java.time.LocalDate
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun TrackedFoodEntity.toTrackedFood(): TrackedFood {
     return TrackedFood(
         name = name,
@@ -23,7 +20,6 @@ fun TrackedFoodEntity.toTrackedFood(): TrackedFood {
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun TrackedFood.toTrackedFoodEntity(): TrackedFoodEntity {
     return TrackedFoodEntity(
         name = name,
