@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.hacybeyker.core.domain.preferences.Preferences
 import com.hacybeyker.core.domain.use_case.FilterOutDigits
 import com.hacybeyker.core.navigation.Route
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import com.hacybeyker.onboarding_domain.use_case.ValidateNutrients
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -26,7 +26,7 @@ class NutrientGoalViewModel @Inject constructor(
     var state by mutableStateOf(NutrientGoalState())
         private set
 
-    private val _uiEvent = Channel<UIEvent>()
+    private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun onEvent(event: NutrientGoalEvent) {
@@ -55,13 +55,13 @@ class NutrientGoalViewModel @Inject constructor(
                         preferences.saveProteinRatio(result.proteinRatio)
                         preferences.saveFatRatio(result.fatRatio)
                         viewModelScope.launch {
-                            _uiEvent.send(UIEvent.Navigate(Route.TRACKER_OVERVIEW))
+                            _uiEvent.send(UiEvent.Navigate(Route.TRACKER_OVERVIEW))
                         }
                     }
 
                     is ValidateNutrients.Result.Error -> {
                         viewModelScope.launch {
-                            _uiEvent.send(UIEvent.ShowSnackbar(result.message))
+                            _uiEvent.send(UiEvent.ShowSnackbar(result.message))
                         }
                     }
                 }

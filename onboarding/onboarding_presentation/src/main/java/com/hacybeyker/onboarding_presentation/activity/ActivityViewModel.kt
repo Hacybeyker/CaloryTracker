@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.hacybeyker.core.domain.model.ActivityLevel
 import com.hacybeyker.core.domain.preferences.Preferences
 import com.hacybeyker.core.navigation.Route
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,7 +23,7 @@ class ActivityViewModel @Inject constructor(
     var selectedActivityLevel by mutableStateOf<ActivityLevel>(ActivityLevel.Medium)
         private set
 
-    private val _uiEvent = Channel<UIEvent>()
+    private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun onActivityLevelSelect(activityLevel: ActivityLevel) {
@@ -33,7 +33,7 @@ class ActivityViewModel @Inject constructor(
     fun onNextClick() {
         viewModelScope.launch {
             preferences.saveActivityLevel(selectedActivityLevel)
-            _uiEvent.send(UIEvent.Navigate(Route.GOAL))
+            _uiEvent.send(UiEvent.Navigate(Route.GOAL))
         }
     }
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hacybeyker.core.domain.preferences.Preferences
 import com.hacybeyker.core.navigation.Route
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import com.hacybeyker.core.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -23,7 +23,7 @@ class WeightViewModel @Inject constructor(
     var weight by mutableStateOf("80.0")
         private set
 
-    private val _uiEvent = Channel<UIEvent>()
+    private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun onWeightEnter(weight: String) {
@@ -36,12 +36,12 @@ class WeightViewModel @Inject constructor(
         viewModelScope.launch {
             val weightNumber = weight.toFloatOrNull() ?: kotlin.run {
                 _uiEvent.send(
-                    UIEvent.ShowSnackbar(UiText.StringResources(com.hacybeyker.core.R.string.error_weight_cant_be_empty))
+                    UiEvent.ShowSnackbar(UiText.StringResource(com.hacybeyker.core.R.string.error_weight_cant_be_empty))
                 )
                 return@launch
             }
             preferences.saveWeight(weightNumber)
-            _uiEvent.send(UIEvent.Navigate(Route.ACTIVITY))
+            _uiEvent.send(UiEvent.Navigate(Route.ACTIVITY))
         }
     }
 }

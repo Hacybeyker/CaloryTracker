@@ -15,13 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.hacybeyker.core.R
 import com.hacybeyker.core.navigation.Route
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import com.hacybeyker.core_ui.LocalSpacing
 import com.hacybeyker.onboarding_presentation.components.ActionButton
 
 @Composable
 fun WelcomeScreen(
-    onNavigate: (UIEvent.Navigate) -> Unit
+    onNavigate: (UiEvent.Navigate) -> Unit
 ) {
     val spacing = LocalSpacing.current
 
@@ -41,7 +41,7 @@ fun WelcomeScreen(
         ActionButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = stringResource(id = R.string.next),
-            onClick = { onNavigate(UIEvent.Navigate(Route.GENDER)) }
+            onClick = { onNavigate(UiEvent.Navigate(Route.GENDER)) }
         )
     }
 }

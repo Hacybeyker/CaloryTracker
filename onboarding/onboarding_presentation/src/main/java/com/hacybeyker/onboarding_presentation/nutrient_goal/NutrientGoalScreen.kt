@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hacybeyker.core.R
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import com.hacybeyker.core_ui.LocalSpacing
 import com.hacybeyker.onboarding_presentation.components.ActionButton
 import com.hacybeyker.onboarding_presentation.components.UnitTextField
@@ -27,7 +27,7 @@ import com.hacybeyker.onboarding_presentation.components.UnitTextField
 @Composable
 fun NutrientGoalScreen(
     scaffoldState: ScaffoldState,
-    onNavigate: (UIEvent.Navigate) -> Unit,
+    onNavigate: (UiEvent.Navigate) -> Unit,
     viewModel: NutrientGoalViewModel = hiltViewModel()
 ) {
 
@@ -38,8 +38,8 @@ fun NutrientGoalScreen(
         viewModel.uiEvent.collect { event ->
             Log.d("TAG", "Here - HeightScreen: event: $event")
             when (event) {
-                is UIEvent.Navigate -> onNavigate(event)
-                is UIEvent.ShowSnackbar -> {
+                is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message.asString(context)
                     )

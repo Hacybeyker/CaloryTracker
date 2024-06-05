@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.hacybeyker.core.domain.model.GoalType
 import com.hacybeyker.core.domain.preferences.Preferences
 import com.hacybeyker.core.navigation.Route
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,7 +23,7 @@ class GoalViewModel @Inject constructor(
     var selectedGoal by mutableStateOf<GoalType>(GoalType.KeepWeight)
         private set
 
-    private val _uiEvent = Channel<UIEvent>()
+    private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun onGoalTypeSelect(goalType: GoalType) {
@@ -33,7 +33,7 @@ class GoalViewModel @Inject constructor(
     fun onNextClick() {
         viewModelScope.launch {
             preferences.saveGoalType(selectedGoal)
-            _uiEvent.send(UIEvent.Navigate(Route.NUTRIENT_GOAL))
+            _uiEvent.send(UiEvent.Navigate(Route.NUTRIENT_GOAL))
         }
     }
 }

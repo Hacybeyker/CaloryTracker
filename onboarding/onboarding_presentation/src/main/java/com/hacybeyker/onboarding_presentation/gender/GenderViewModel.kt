@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.hacybeyker.core.domain.model.Gender
 import com.hacybeyker.core.domain.preferences.Preferences
 import com.hacybeyker.core.navigation.Route
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,7 +23,7 @@ class GenderViewModel @Inject constructor(
     var selectedGender by mutableStateOf<Gender>(Gender.Male)
         private set
 
-    private val _uiEvent = Channel<UIEvent>()
+    private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun onGenderClick(gender: Gender) {
@@ -33,7 +33,7 @@ class GenderViewModel @Inject constructor(
     fun onNextClick() {
         viewModelScope.launch {
             preferences.saveGender(selectedGender)
-            _uiEvent.send(UIEvent.Navigate(Route.AGE))
+            _uiEvent.send(UiEvent.Navigate(Route.AGE))
         }
     }
 }

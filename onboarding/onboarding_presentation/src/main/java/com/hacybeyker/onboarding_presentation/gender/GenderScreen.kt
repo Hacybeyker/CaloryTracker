@@ -21,14 +21,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hacybeyker.core.domain.model.Gender
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import com.hacybeyker.core_ui.LocalSpacing
 import com.hacybeyker.onboarding_presentation.components.ActionButton
 import com.hacybeyker.onboarding_presentation.components.SelectableButton
 
 @Composable
 fun GenderScreen(
-    onNavigate: (UIEvent.Navigate) -> Unit,
+    onNavigate: (UiEvent.Navigate) -> Unit,
     viewModel: GenderViewModel = hiltViewModel()
 ) {
 
@@ -38,7 +38,7 @@ fun GenderScreen(
         viewModel.uiEvent.collect { event ->
             Log.d("TAG", "Here - GenderScreen: event: $event")
             when (event) {
-                is UIEvent.Navigate -> onNavigate(event)
+                is UiEvent.Navigate -> onNavigate(event)
                 else -> Unit
             }
         }

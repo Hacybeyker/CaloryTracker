@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.hacybeyker.core.domain.preferences.Preferences
 import com.hacybeyker.core.domain.use_case.FilterOutDigits
 import com.hacybeyker.core.navigation.Route
-import com.hacybeyker.core.util.UIEvent
+import com.hacybeyker.core.util.UiEvent
 import com.hacybeyker.core.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -25,7 +25,7 @@ class HeightViewModel @Inject constructor(
     var height by mutableStateOf("180")
         private set
 
-    private val _uiEvent = Channel<UIEvent>()
+    private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun onHeightEnter(height: String) {
@@ -38,12 +38,12 @@ class HeightViewModel @Inject constructor(
         viewModelScope.launch {
             val heightNumber = height.toIntOrNull() ?: kotlin.run {
                 _uiEvent.send(
-                    UIEvent.ShowSnackbar(UiText.StringResources(com.hacybeyker.core.R.string.error_height_cant_be_empty))
+                    UiEvent.ShowSnackbar(UiText.StringResource(com.hacybeyker.core.R.string.error_height_cant_be_empty))
                 )
                 return@launch
             }
             preferences.saveHeight(heightNumber)
-            _uiEvent.send(UIEvent.Navigate(Route.WEIGHT))
+            _uiEvent.send(UiEvent.Navigate(Route.WEIGHT))
         }
     }
 }

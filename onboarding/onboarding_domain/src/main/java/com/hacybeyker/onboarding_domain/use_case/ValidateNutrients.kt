@@ -15,12 +15,12 @@ class ValidateNutrients {
 
         if (carbsRatio == null || proteinRatio == null || fatRatio == null) {
             return Result.Error(
-                message = UiText.StringResources(com.hacybeyker.core.R.string.error_invalid_values)
+                message = UiText.StringResource(com.hacybeyker.core.R.string.error_invalid_values)
             )
         }
         if (carbsRatio + proteinRatio + fatRatio != 100f) {
             return Result.Error(
-                message = UiText.StringResources(com.hacybeyker.core.R.string.error_not_100_percent)
+                message = UiText.StringResource(com.hacybeyker.core.R.string.error_not_100_percent)
             )
         }
         return Result.Success(carbsRatio, proteinRatio, fatRatio)
