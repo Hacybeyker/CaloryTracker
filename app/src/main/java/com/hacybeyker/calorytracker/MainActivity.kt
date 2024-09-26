@@ -22,6 +22,7 @@ import com.hacybeyker.onboarding_presentation.height.HeightScreen
 import com.hacybeyker.onboarding_presentation.nutrient_goal.NutrientGoalScreen
 import com.hacybeyker.onboarding_presentation.weight.WeightScreen
 import com.hacybeyker.onboarding_presentation.welcome.WelcomeScreen
+import com.hacybeyker.tracker_presentation.tracker_overview.TrackerOverviewScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     Log.d("TAG", "Here - onCreate: $paddingValues")
                     NavHost(
                         navController = navController,
-                        startDestination = Route.WELCOME
+                        startDestination = Route.WELCOME,
                     ) {
                         composable(Route.WELCOME) {
                             WelcomeScreen(onNavigate = navController::navigate)
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
                         composable(Route.AGE) {
                             AgeScreen(
                                 scaffoldState = scaffoldState,
-                                onNavigate = navController::navigate
+                                onNavigate = navController::navigate,
                             )
                         }
                         composable(Route.GENDER) {
@@ -56,19 +57,19 @@ class MainActivity : ComponentActivity() {
                         composable(Route.HEIGHT) {
                             HeightScreen(
                                 scaffoldState = scaffoldState,
-                                onNavigate = navController::navigate
+                                onNavigate = navController::navigate,
                             )
                         }
                         composable(Route.WEIGHT) {
                             WeightScreen(
                                 scaffoldState = scaffoldState,
-                                onNavigate = navController::navigate
+                                onNavigate = navController::navigate,
                             )
                         }
                         composable(Route.NUTRIENT_GOAL) {
                             NutrientGoalScreen(
                                 scaffoldState = scaffoldState,
-                                onNavigate = navController::navigate
+                                onNavigate = navController::navigate,
                             )
                         }
                         composable(Route.ACTIVITY) {
@@ -78,14 +79,12 @@ class MainActivity : ComponentActivity() {
                             GoalScreen(onNavigate = navController::navigate)
                         }
                         composable(Route.TRACKER_OVERVIEW) {
-
+                            TrackerOverviewScreen(onNavigate = navController::navigate)
                         }
                         composable(Route.SEARCH) {
-
                         }
                     }
                 }
-
             }
         }
     }
