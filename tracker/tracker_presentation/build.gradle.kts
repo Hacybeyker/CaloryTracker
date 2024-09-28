@@ -15,4 +15,5 @@ dependencies {
     implementation(project(Modules.trackerDomain))
 
     implementation(Coil.coilCompose)
+    implementation("com.google.android.libraries.places:places:4.0.0")
 }
