@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hacybeyker.core.domain.preferences.Preferences
 import com.hacybeyker.core.domain.use_case.FilterOutDigits
-import com.hacybeyker.core.navigation.Route
 import com.hacybeyker.core.util.UiEvent
 import com.hacybeyker.core.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,33 +16,35 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AgeViewModel @Inject constructor(
-    private val preferences: Preferences,
-    private val filterOutDigits: FilterOutDigits
-) : ViewModel() {
+class AgeViewModel
+    @Inject
+    constructor(
+        private val preferences: Preferences,
+        private val filterOutDigits: FilterOutDigits,
+    ) : ViewModel() {
+        var age by mutableStateOf("20")
+            private set
 
-    var age by mutableStateOf("20")
-        private set
+        private val _uiEvent = Channel<UiEvent>()
+        val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val _uiEvent = Channel<UiEvent>()
-    val uiEvent = _uiEvent.receiveAsFlow()
-
-    fun onAgeEnter(age: String) {
-        if (age.length <= 3) {
-            this.age = filterOutDigits(age)
-        }
-    }
-
-    fun onNextClick() {
-        viewModelScope.launch {
-            val ageNumber = age.toIntOrNull() ?: kotlin.run {
-                _uiEvent.send(
-                    UiEvent.ShowSnackbar(UiText.StringResource(com.hacybeyker.core.R.string.error_age_cant_be_empty))
-                )
-                return@launch
+        fun onAgeEnter(age: String) {
+            if (age.length <= 3) {
+                this.age = filterOutDigits(age)
             }
-            preferences.saveAge(ageNumber)
-            _uiEvent.send(UiEvent.Navigate(Route.HEIGHT))
+        }
+
+        fun onNextClick() {
+            viewModelScope.launch {
+                val ageNumber =
+                    age.toIntOrNull() ?: kotlin.run {
+                        _uiEvent.send(
+                            UiEvent.ShowSnackbar(UiText.StringResource(com.hacybeyker.core.R.string.error_age_cant_be_empty)),
+                        )
+                        return@launch
+                    }
+                preferences.saveAge(ageNumber)
+                _uiEvent.send(UiEvent.Success)
+            }
         }
     }
-}

@@ -27,10 +27,9 @@ import com.hacybeyker.onboarding_presentation.components.UnitTextField
 @Composable
 fun WeightScreen(
     scaffoldState: ScaffoldState,
-    onNavigate: (UiEvent.Navigate) -> Unit,
-    viewModel: WeightViewModel = hiltViewModel()
+    onNextClick: () -> Unit,
+    viewModel: WeightViewModel = hiltViewModel(),
 ) {
-
     val spacing = LocalSpacing.current
     val context = LocalContext.current
 
@@ -38,10 +37,10 @@ fun WeightScreen(
         viewModel.uiEvent.collect { event ->
             Log.d("TAG", "Here - HeightScreen: event: $event")
             when (event) {
-                is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.Success -> onNextClick()
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.message.asString(context)
+                        message = event.message.asString(context),
                     )
                 }
 
@@ -51,33 +50,35 @@ fun WeightScreen(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(spacing.spaceLarge)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(spacing.spaceLarge),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = stringResource(id = R.string.whats_your_weight),
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.h3,
             )
             Spacer(modifier = Modifier.height(spacing.spaceMedium))
             UnitTextField(
                 value = viewModel.weight,
                 onValueChange = viewModel::onWeightEnter,
-                unit = stringResource(id = R.string.kg)
+                unit = stringResource(id = R.string.kg),
             )
         }
 
         ActionButton(
             text = stringResource(id = R.string.next),
             onClick = viewModel::onNextClick,
-            modifier = Modifier.align(
-                Alignment.BottomEnd
-            )
+            modifier =
+                Modifier.align(
+                    Alignment.BottomEnd,
+                ),
         )
     }
 }

@@ -27,10 +27,9 @@ import com.hacybeyker.onboarding_presentation.components.UnitTextField
 @Composable
 fun NutrientGoalScreen(
     scaffoldState: ScaffoldState,
-    onNavigate: (UiEvent.Navigate) -> Unit,
-    viewModel: NutrientGoalViewModel = hiltViewModel()
+    onNextClick: () -> Unit,
+    viewModel: NutrientGoalViewModel = hiltViewModel(),
 ) {
-
     val spacing = LocalSpacing.current
     val context = LocalContext.current
 
@@ -38,10 +37,10 @@ fun NutrientGoalScreen(
         viewModel.uiEvent.collect { event ->
             Log.d("TAG", "Here - HeightScreen: event: $event")
             when (event) {
-                is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.Success -> onNextClick()
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.message.asString(context)
+                        message = event.message.asString(context),
                     )
                 }
 
@@ -51,18 +50,19 @@ fun NutrientGoalScreen(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(spacing.spaceLarge)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(spacing.spaceLarge),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = stringResource(id = R.string.what_are_your_nutrient_goals),
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.h3,
             )
             Spacer(modifier = Modifier.height(spacing.spaceMedium))
             UnitTextField(
@@ -70,7 +70,7 @@ fun NutrientGoalScreen(
                 onValueChange = {
                     viewModel.onEvent(NutrientGoalEvent.OnCarbRatioEnter(it))
                 },
-                unit = stringResource(id = R.string.percent_carbs)
+                unit = stringResource(id = R.string.percent_carbs),
             )
             Spacer(modifier = Modifier.height(spacing.spaceMedium))
             UnitTextField(
@@ -78,7 +78,7 @@ fun NutrientGoalScreen(
                 onValueChange = {
                     viewModel.onEvent(NutrientGoalEvent.OnProteinRatioEnter(it))
                 },
-                unit = stringResource(id = R.string.percent_proteins)
+                unit = stringResource(id = R.string.percent_proteins),
             )
             Spacer(modifier = Modifier.height(spacing.spaceMedium))
             UnitTextField(
@@ -86,7 +86,7 @@ fun NutrientGoalScreen(
                 onValueChange = {
                     viewModel.onEvent(NutrientGoalEvent.OnFatRatioEnter(it))
                 },
-                unit = stringResource(id = R.string.percent_fats)
+                unit = stringResource(id = R.string.percent_fats),
             )
         }
 
@@ -95,9 +95,10 @@ fun NutrientGoalScreen(
             onClick = {
                 viewModel.onEvent(NutrientGoalEvent.OnNextClick)
             },
-            modifier = Modifier.align(
-                Alignment.BottomEnd
-            )
+            modifier =
+                Modifier.align(
+                    Alignment.BottomEnd,
+                ),
         )
     }
 }

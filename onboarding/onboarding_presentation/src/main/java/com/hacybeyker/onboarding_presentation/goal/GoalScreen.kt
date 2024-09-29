@@ -28,35 +28,35 @@ import com.hacybeyker.onboarding_presentation.components.SelectableButton
 
 @Composable
 fun GoalScreen(
-    onNavigate: (UiEvent.Navigate) -> Unit,
-    viewModel: GoalViewModel = hiltViewModel()
+    onNextClick: () -> Unit,
+    viewModel: GoalViewModel = hiltViewModel(),
 ) {
-
     val spacing = LocalSpacing.current
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             Log.d("TAG", "Here - GoalScreen: event: $event")
             when (event) {
-                is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.Success -> onNextClick()
                 else -> Unit
             }
         }
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(spacing.spaceLarge)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(spacing.spaceLarge),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = stringResource(id = com.hacybeyker.core.R.string.lose_keep_or_gain_weight),
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.h3,
             )
             Spacer(modifier = Modifier.height(spacing.spaceMedium))
             Row {
@@ -68,7 +68,7 @@ fun GoalScreen(
                     onClick = {
                         viewModel.onGoalTypeSelect(GoalType.LoseWeight)
                     },
-                    textStyle = MaterialTheme.typography.button.copy(fontWeight = FontWeight.Normal)
+                    textStyle = MaterialTheme.typography.button.copy(fontWeight = FontWeight.Normal),
                 )
                 Spacer(modifier = Modifier.width(spacing.spaceMedium))
                 SelectableButton(
@@ -79,7 +79,7 @@ fun GoalScreen(
                     onClick = {
                         viewModel.onGoalTypeSelect(GoalType.KeepWeight)
                     },
-                    textStyle = MaterialTheme.typography.button.copy(fontWeight = FontWeight.Normal)
+                    textStyle = MaterialTheme.typography.button.copy(fontWeight = FontWeight.Normal),
                 )
                 Spacer(modifier = Modifier.width(spacing.spaceMedium))
                 SelectableButton(
@@ -90,7 +90,7 @@ fun GoalScreen(
                     onClick = {
                         viewModel.onGoalTypeSelect(GoalType.GainWeight)
                     },
-                    textStyle = MaterialTheme.typography.button.copy(fontWeight = FontWeight.Normal)
+                    textStyle = MaterialTheme.typography.button.copy(fontWeight = FontWeight.Normal),
                 )
             }
         }
@@ -98,9 +98,10 @@ fun GoalScreen(
         ActionButton(
             text = stringResource(id = com.hacybeyker.core.R.string.next),
             onClick = viewModel::onNextClick,
-            modifier = Modifier.align(
-                Alignment.BottomEnd
-            )
+            modifier =
+                Modifier.align(
+                    Alignment.BottomEnd,
+                ),
         )
     }
 }

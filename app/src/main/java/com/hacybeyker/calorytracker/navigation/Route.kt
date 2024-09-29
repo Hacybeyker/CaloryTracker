@@ -1,4 +1,4 @@
-package com.hacybeyker.core.navigation
+package com.hacybeyker.calorytracker.navigation
 
 object Route {
     const val WELCOME = "welcome"
