@@ -19,106 +19,117 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TrackerOverviewViewModel @Inject constructor(
-    preferences: Preferences,
-    private val trackerUseCases: TrackerUseCases,
-) : ViewModel() {
+class TrackerOverviewViewModel
+    @Inject
+    constructor(
+        preferences: Preferences,
+        private val trackerUseCases: TrackerUseCases,
+    ) : ViewModel() {
+        var state by mutableStateOf(TrackerOverviewState())
+            private set
 
-    var state by mutableStateOf(TrackerOverviewState())
-        private set
+        private val _uiEvent = Channel<UiEvent>()
+        val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val _uiEvent = Channel<UiEvent>()
-    val uiEvent = _uiEvent.receiveAsFlow()
+        private var getFoodsForDateJob: Job? = null
 
-    private var getFoodsForDateJob: Job? = null
+        init {
+            refreshFoods()
+            preferences.saveShouldShowOnboarding(false)
+        }
 
-    init {
-        preferences.saveShouldShowOnboarding(false)
-    }
-
-    fun onEvent(event: TrackerOverviewEvent) {
-        when (event) {
-            is TrackerOverviewEvent.OnAddFoodClick -> {
-                viewModelScope.launch {
-                    _uiEvent.send(
-                        UiEvent.Navigate(
-                            route = Route.SEARCH
-                                    + "/${event.meal.mealType.name}"
-                                    + "/${state.date.dayOfMonth}"
-                                    + "/${state.date.monthValue}"
-                                    + "/${state.date.year}"
+        fun onEvent(event: TrackerOverviewEvent) {
+            when (event) {
+                is TrackerOverviewEvent.OnAddFoodClick -> {
+                    viewModelScope.launch {
+                        _uiEvent.send(
+                            UiEvent.Navigate(
+                                route =
+                                    Route.SEARCH +
+                                        "/${event.meal.mealType.name}" +
+                                        "/${state.date.dayOfMonth}" +
+                                        "/${state.date.monthValue}" +
+                                        "/${state.date.year}",
+                            ),
                         )
-                    )
+                    }
                 }
-            }
 
-            is TrackerOverviewEvent.OnDeleteTrackedFoodClick -> {
-                viewModelScope.launch {
-                    trackerUseCases.deleteTrackedFood(event.trackedFood)
+                is TrackerOverviewEvent.OnDeleteTrackedFoodClick -> {
+                    viewModelScope.launch {
+                        trackerUseCases.deleteTrackedFood(event.trackedFood)
+                        refreshFoods()
+                    }
+                }
+
+                is TrackerOverviewEvent.OnNextDayClick -> {
+                    state =
+                        state.copy(
+                            date = state.date.plusDays(1),
+                        )
                     refreshFoods()
                 }
-            }
 
-            is TrackerOverviewEvent.OnNextDayClick -> {
-                state = state.copy(
-                    date = state.date.plusDays(1)
-                )
-                refreshFoods()
-            }
+                is TrackerOverviewEvent.OnPreviousDayClick -> {
+                    state =
+                        state.copy(
+                            date = state.date.minusDays(1),
+                        )
+                    refreshFoods()
+                }
 
-            is TrackerOverviewEvent.OnPreviousDayClick -> {
-                state = state.copy(
-                    date = state.date.minusDays(1)
-                )
-                refreshFoods()
-            }
-
-            is TrackerOverviewEvent.OnToggleMealClick -> {
-                state = state.copy(
-                    meals = state.meals.map {
-                        if (it.name == event.meal.name) {
-                            it.copy(isExpanded = !it.isExpanded)
-                        } else it
-                    }
-                )
+                is TrackerOverviewEvent.OnToggleMealClick -> {
+                    state =
+                        state.copy(
+                            meals =
+                                state.meals.map {
+                                    if (it.name == event.meal.name) {
+                                        it.copy(isExpanded = !it.isExpanded)
+                                    } else {
+                                        it
+                                    }
+                                },
+                        )
+                }
             }
         }
-    }
 
-    private fun refreshFoods() {
-        getFoodsForDateJob?.cancel()
-        getFoodsForDateJob = trackerUseCases
-            .getFoodsForDate(state.date)
-            .onEach { foods ->
-                val nutrientsResult = trackerUseCases.calculateMealNutrients(foods)
-                state = state.copy(
-                    totalCarbs = nutrientsResult.totalCarbs,
-                    totalProtein = nutrientsResult.totalProtein,
-                    totalFat = nutrientsResult.totalFat,
-                    totalCalories = nutrientsResult.totalCalories,
-                    carbsGoal = nutrientsResult.carbsGoal,
-                    proteinGoal = nutrientsResult.proteinGoal,
-                    fatGoal = nutrientsResult.fatGoal,
-                    caloriesGoal = nutrientsResult.caloriesGoal,
-                    trackedFoods = foods,
-                    meals = state.meals.map {
-                        val nutrientsForMeal =
-                            nutrientsResult.mealNutrients[it.mealType]
-                                ?: return@map it.copy(
-                                    carbs = 0,
-                                    protein = 0,
-                                    fat = 0,
-                                    calories = 0
-                                )
-                        it.copy(
-                            carbs = nutrientsForMeal.carbs,
-                            protein = nutrientsForMeal.protein,
-                            fat = nutrientsForMeal.fat,
-                            calories = nutrientsForMeal.calories
-                        )
-                    }
-                )
-            }
-            .launchIn(viewModelScope)
+        private fun refreshFoods() {
+            getFoodsForDateJob?.cancel()
+            getFoodsForDateJob =
+                trackerUseCases
+                    .getFoodsForDate(state.date)
+                    .onEach { foods ->
+                        val nutrientsResult = trackerUseCases.calculateMealNutrients(foods)
+                        state =
+                            state.copy(
+                                totalCarbs = nutrientsResult.totalCarbs,
+                                totalProtein = nutrientsResult.totalProtein,
+                                totalFat = nutrientsResult.totalFat,
+                                totalCalories = nutrientsResult.totalCalories,
+                                carbsGoal = nutrientsResult.carbsGoal,
+                                proteinGoal = nutrientsResult.proteinGoal,
+                                fatGoal = nutrientsResult.fatGoal,
+                                caloriesGoal = nutrientsResult.caloriesGoal,
+                                trackedFoods = foods,
+                                meals =
+                                    state.meals.map {
+                                        val nutrientsForMeal =
+                                            nutrientsResult.mealNutrients[it.mealType]
+                                                ?: return@map it.copy(
+                                                    carbs = 0,
+                                                    protein = 0,
+                                                    fat = 0,
+                                                    calories = 0,
+                                                )
+                                        it.copy(
+                                            carbs = nutrientsForMeal.carbs,
+                                            protein = nutrientsForMeal.protein,
+                                            fat = nutrientsForMeal.fat,
+                                            calories = nutrientsForMeal.calories,
+                                        )
+                                    },
+                            )
+                    }.launchIn(viewModelScope)
+        }
     }
-}

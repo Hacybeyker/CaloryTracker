@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -162,6 +163,7 @@ fun TrackableFoodItem(
                                     } else {
                                         ImeAction.Default
                                     },
+                                keyboardType = KeyboardType.Number,
                             ),
                         keyboardActions =
                             KeyboardActions(
