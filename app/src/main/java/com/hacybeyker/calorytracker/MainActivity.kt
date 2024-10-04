@@ -49,11 +49,11 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination =
-                            if (shouldShowOnboarding) {
-                                Route.WELCOME
-                            } else {
-                                Route.TRACKER_OVERVIEW
-                            },
+                        if (shouldShowOnboarding) {
+                            Route.WELCOME
+                        } else {
+                            Route.TRACKER_OVERVIEW
+                        },
                     ) {
                         composable(Route.WELCOME) {
                             WelcomeScreen(onNextClick = {
@@ -113,9 +113,9 @@ class MainActivity : ComponentActivity() {
                                 onNavigateToSearch = { mealName, day, month, year ->
                                     navController.navigate(
                                         Route.SEARCH + "/$mealName" +
-                                            "/$day" +
-                                            "/$month" +
-                                            "/$year",
+                                                "/$day" +
+                                                "/$month" +
+                                                "/$year",
                                     )
                                 },
                             )
@@ -123,20 +123,20 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = Route.SEARCH + "/{mealName}/{dayOfMonth}/{month}/{year}",
                             arguments =
-                                listOf(
-                                    navArgument("mealName") {
-                                        type = NavType.StringType
-                                    },
-                                    navArgument("dayOfMonth") {
-                                        type = NavType.IntType
-                                    },
-                                    navArgument("month") {
-                                        type = NavType.IntType
-                                    },
-                                    navArgument("year") {
-                                        type = NavType.IntType
-                                    },
-                                ),
+                            listOf(
+                                navArgument("mealName") {
+                                    type = NavType.StringType
+                                },
+                                navArgument("dayOfMonth") {
+                                    type = NavType.IntType
+                                },
+                                navArgument("month") {
+                                    type = NavType.IntType
+                                },
+                                navArgument("year") {
+                                    type = NavType.IntType
+                                },
+                            ),
                         ) {
                             val mealName = it.arguments?.getString("mealName")!!
                             val dayOfMonth = it.arguments?.getInt("dayOfMonth")!!
