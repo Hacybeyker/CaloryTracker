@@ -30,9 +30,9 @@ fun TrackerOverviewScreen(
     val context = LocalContext.current
     LazyColumn(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(bottom = spacing.spaceMedium),
+        Modifier
+            .fillMaxSize()
+            .padding(bottom = spacing.spaceMedium),
     ) {
         item {
             NutrientsHeader(state = state)
@@ -46,9 +46,9 @@ fun TrackerOverviewScreen(
                     viewModel.onEvent(TrackerOverviewEvent.OnNextDayClick)
                 },
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = spacing.spaceMedium),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spacing.spaceMedium),
             )
             Spacer(modifier = Modifier.height(spacing.spaceMedium))
         }
@@ -61,11 +61,12 @@ fun TrackerOverviewScreen(
                 content = {
                     Column(
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = spacing.spaceSmall),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = spacing.spaceSmall),
                     ) {
-                        state.trackedFoods.forEach { food ->
+                        val foods = state.trackedFoods.filter { it.mealType == meal.mealType }
+                        foods.forEach { food ->
                             TrackedFoodItem(
                                 trackedFood = food,
                                 onDeleteClick = {
@@ -78,10 +79,10 @@ fun TrackerOverviewScreen(
                         }
                         AddButton(
                             text =
-                                stringResource(
-                                    id = com.hacybeyker.core.R.string.add_meal,
-                                    meal.name.asString(context),
-                                ),
+                            stringResource(
+                                id = com.hacybeyker.core.R.string.add_meal,
+                                meal.name.asString(context),
+                            ),
                             onClick = {
                                 onNavigateToSearch(
                                     meal.name.asString(context),
