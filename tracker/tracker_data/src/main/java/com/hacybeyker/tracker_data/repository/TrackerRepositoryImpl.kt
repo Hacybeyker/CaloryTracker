@@ -16,6 +16,7 @@ class TrackerRepositoryImpl(
     private val dao: TrackerDao,
     private val api: OpenFoodApi,
 ) : TrackerRepository {
+
     override suspend fun searchFood(
         query: String,
         page: Int,
@@ -33,8 +34,8 @@ class TrackerRepositoryImpl(
                     .filter {
                         val calculatorCalories =
                             it.nutriments.carbohydrates100g * 4f +
-                                it.nutriments.proteins100g * 4f +
-                                it.nutriments.fat100g * 9f
+                                    it.nutriments.proteins100g * 4f +
+                                    it.nutriments.fat100g * 9f
                         val lowerBound = calculatorCalories * 0.99f
                         val upperBound = calculatorCalories * 1.01f
                         it.nutriments.energyKcal100g in (lowerBound..upperBound)
